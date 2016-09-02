@@ -17,6 +17,13 @@ import CONFIG    # Configuration options. Create by editing CONFIG.base.py
 import argparse  # Command line options (may override some configuration options)
 import socket    # Basic TCP/IP communication on the internet
 import _thread   # Response computation runs concurrently with main program 
+import argparse  # To parse port num arg. help parsing from
+                 # https://www.youtube.com/watch?v=rnatu3xxVQE
+                 # https://docs.python.org/3/library/argparse.html#action
+import re        # regex to validate path. help from:
+                 # https://www.youtube.com/watch?v=sZyAn2TW7GY
+import os.path   # Valid that path exists. Help from:
+                 # http://stackoverflow.com/questions/82831/how-to-check-whether-a-file-exists-using-python
 
 def listen(portnum):
     """
@@ -83,7 +90,15 @@ def respond(sock):
     parts = request.split()
     if len(parts) > 1 and parts[0] == "GET":
         transmit(STATUS_OK, sock)
-        transmit(CAT, sock)
+
+        path = parts[1] #file path
+        if not valid(path):
+            transmit(get_page(STATUS_FORBIDDEN), sock)
+        elif not exists(path[1:]):
+            transmit(get_page(STATUS_NOT_FOUND), sock)
+        else:
+            html_string = get_page(path[1:])
+            transmit(html_string, sock)
     else:
         transmit(STATUS_NOT_IMPLEMENTED, sock)        
         transmit("\nI don't handle this request: {}\n".format(request), sock)
@@ -91,6 +106,33 @@ def respond(sock):
     sock.close()
     return
 
+def valid(path):
+    """
+    True if the path does not contain "//", "~", or ".." (and is HTML or CSS file)
+    False otherwise.
+    regex
+    \W anything but a character
+    """
+    non_char = str(re.findall(r'\W{1,2}', path)) #finds not letter characters
+    forbidden_text = not ("//" in non_char or "~" in non_char  or ".." in non_char)
+    suffix = ".html" in path or ".css" in path
+    return forbidden_text and suffix
+
+def exists(filename):
+    """
+    True if path exists
+    False otherwise
+    """
+    return os.path.isfile(filename)
+
+def get_page(filename):
+    """
+    returns the 'path' text fileas a string.
+    """
+    with open(filename, 'r') as file:
+        page = file.read()
+    return page
+    
 def transmit(msg, sock):
     """It might take several sends to get the whole message out"""
     sent = 0
