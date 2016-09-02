@@ -93,9 +93,9 @@ def respond(sock):
 
         path = parts[1] #file path
         if not valid(path):
-            transmit(get_page(STATUS_FORBIDDEN), sock)
+            transmit((STATUS_FORBIDDEN), sock)
         elif not exists(path[1:]):
-            transmit(get_page(STATUS_NOT_FOUND), sock)
+            transmit((STATUS_NOT_FOUND), sock)
         else:
             html_string = get_page(path[1:])
             transmit(html_string, sock)
