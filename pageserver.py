@@ -1,16 +1,11 @@
 """
-  A trivial web server in Python. 
+  CIS 322 Project 1
+  A simple web server in Python. 
 
   Based largely on https://docs.python.org/3.4/howto/sockets.html
   This trivial implementation is not robust:  We have omitted decent
   error handling and many other things to keep the illustration as simple
   as possible. 
-
-  FIXME:
-  Currently this program always serves an ascii graphic of a cat.
-  Change it to serve files if they end with .html or .css, and are
-  located in ./pages  (where '.' is the directory from which this
-  program is run).  
 """
 
 import CONFIG    # Configuration options. Create by editing CONFIG.base.py
