@@ -75,7 +75,7 @@ def respond(sock):
 
     parts = request.split()
     if len(parts) > 1 and parts[0] == "GET":
-        #transmit(STATUS_OK, sock)
+        transmit(STATUS_OK, sock)
 
         path = parts[1] #file path
         if not valid(path):
@@ -84,7 +84,6 @@ def respond(sock):
             transmit((STATUS_NOT_FOUND), sock)
         else:
             html_string = get_page(path[1:])
-            transmit(STATUS_OK, sock)
             transmit(html_string, sock)
     else:
         transmit(STATUS_NOT_IMPLEMENTED, sock)        
