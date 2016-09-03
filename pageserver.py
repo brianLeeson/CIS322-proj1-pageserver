@@ -53,29 +53,21 @@ def serve(sock, func):
         (clientsocket, address) = sock.accept()
         _thread.start_new_thread(func, (clientsocket,))
 
-
-##
-## Starter version only serves cat pictures. In fact, only a
-## particular cat picture.  This one.
-##
-CAT = """
-     ^ ^
-   =(   )=
-"""
-
 ## HTTP response codes, as the strings we will actually send. 
-##   See:  https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+##   See: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
 ##   or    http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
 ## 
 STATUS_OK = "HTTP/1.0 200 OK\n\n"
 STATUS_FORBIDDEN = "HTTP/1.0 403 Forbidden\n\n"
 STATUS_NOT_FOUND = "HTTP/1.0 404 Not Found\n\n"
 STATUS_NOT_IMPLEMENTED = "HTTP/1.0 401 Not Implemented\n\n"
+STATUS_IM_A_TEAPOT = "HTTP/1.0 418 I'm A Teapot\n\n"
 
 def respond(sock):
     """
     This server responds only to GET requests (not PUT, POST, or UPDATE).
-    Any valid GET request is answered with an ascii graphic of a cat. 
+    Any valid GET request is answered with an HTML or CSS file if they exist, 404 error if they do not.
+    Any request with '..', '//', or '~' is answered with 403 forbidden.
     """
     request = sock.recv(1024)  # We accept only short requests
     request = str(request, encoding='utf-8', errors='strict')
@@ -83,7 +75,7 @@ def respond(sock):
 
     parts = request.split()
     if len(parts) > 1 and parts[0] == "GET":
-        transmit(STATUS_OK, sock)
+        #transmit(STATUS_OK, sock)
 
         path = parts[1] #file path
         if not valid(path):
@@ -92,6 +84,7 @@ def respond(sock):
             transmit((STATUS_NOT_FOUND), sock)
         else:
             html_string = get_page(path[1:])
+            transmit(STATUS_OK, sock)
             transmit(html_string, sock)
     else:
         transmit(STATUS_NOT_IMPLEMENTED, sock)        
@@ -121,7 +114,7 @@ def exists(filename):
 
 def get_page(filename):
     """
-    returns the 'path' text fileas a string.
+    returns the 'path' text file as a string.
     """
     with open(filename, 'r') as file:
         page = file.read()
