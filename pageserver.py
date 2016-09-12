@@ -12,9 +12,6 @@ import CONFIG    # Configuration options. Create by editing CONFIG.base.py
 import argparse  # Command line options (may override some configuration options)
 import socket    # Basic TCP/IP communication on the internet
 import _thread   # Response computation runs concurrently with main program 
-import argparse  # To parse port num arg. help parsing from
-                 # https://www.youtube.com/watch?v=rnatu3xxVQE
-                 # https://docs.python.org/3/library/argparse.html#action
 import re        # regex to validate path. help from:
                  # https://www.youtube.com/watch?v=sZyAn2TW7GY
 import os.path   # Valid that path exists. Help from:
