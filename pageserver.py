@@ -103,7 +103,7 @@ def valid(path):
     file_type = path.split('.')[-1]
     print(file_type)
     print(len(file_type))
-    suffix = "html" in file_type or "css" in file_type
+    suffix = "html" is file_type or "css" is file_type
     print(suffix)
     return forbidden_text and suffix
 
