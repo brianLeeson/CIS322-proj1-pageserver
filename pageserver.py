@@ -102,6 +102,7 @@ def valid(path):
     print(path)
     file_type = path.split('.')[-1]
     print(file_type)
+    print(type(file_type))
     print(len(file_type))
     print("html" is file_type)
     print("css" is file_type)
