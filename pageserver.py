@@ -74,13 +74,13 @@ def respond(sock):
     if len(parts) > 1 and parts[0] == "GET":
         transmit(STATUS_OK, sock)
 
-        path = "pages/" + parts[1] #file path
+        path = "pages" + parts[1] #file path
         if not valid(path):
             transmit((STATUS_FORBIDDEN), sock)
-        elif not exists(path[1:]):
+        elif not exists(path):
             transmit((STATUS_NOT_FOUND), sock)
         else:
-            html_string = get_page(path[1:])
+            html_string = get_page(path)
             transmit(html_string, sock)
     else:
         transmit(STATUS_NOT_IMPLEMENTED, sock)        
