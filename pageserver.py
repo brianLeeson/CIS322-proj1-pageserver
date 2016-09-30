@@ -98,9 +98,12 @@ def valid(path):
     """
     non_char = str(re.findall(r'\W{1,2}', path)) #finds not letter characters
     forbidden_text = not ("//" in non_char or "~" in non_char  or ".." in non_char)
-    
+
+    print(path)
     file_type = path.split('.')[-1]
+    print(file_type)
     suffix = "html" is file_type or "css" is file_type
+    print(suffix)
     return forbidden_text and suffix
 
 def exists(filename):
