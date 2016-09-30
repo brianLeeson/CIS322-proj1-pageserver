@@ -75,7 +75,6 @@ def respond(sock):
         transmit(STATUS_OK, sock)
 
         path = "pages" + parts[1] #file path
-        print(path)
         if not valid(path):
             transmit((STATUS_FORBIDDEN), sock)
         elif not exists(path):
