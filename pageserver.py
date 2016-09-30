@@ -104,9 +104,9 @@ def valid(path):
     print(file_type)
     print(type(file_type))
     print(len(file_type))
-    print("html" is file_type)
-    print("css" is file_type)
-    suffix = "html" is file_type or "css" is file_type
+    print('html' == file_type)
+    print("css" == file_type)
+    suffix = "html" == file_type or "css" == file_type
     print(suffix)
     return forbidden_text and suffix
 
